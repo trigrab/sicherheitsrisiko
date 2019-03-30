@@ -5,21 +5,23 @@
 {# Load CSS and JavaScript #}
 
 {% block content %}
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand">Gallery</a>
+
+            <a class="btn btn-raised btn-info" href="/upload">Take new screenshot</a>
+    </nav>
     <div class="container-fluid">
-    <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Thumbnail Gallery</h1>
 
-          <hr class="mt-2 mb-5">
+        <hr class="mt-2 mb-5">
 
-          <div class="row text-center text-lg-left">
+        <div class="row text-center text-lg-left">
         {% for picture in pictures %}
-
-
             <div class="col-lg-3 col-md-4 col-6">
               <a href="{{ picture.image_file.path }}" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="{{ picture.thumbnail.path }}" alt="">
+                <img class="img-fluid img-thumbnail" src="{{ picture.thumbnail.path }}" alt="">
               </a>
             </div>
-    {% endfor %}
+        {% endfor %}
           </div>
     </div>
 {% endblock %}
