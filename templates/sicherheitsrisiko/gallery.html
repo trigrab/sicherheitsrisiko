@@ -17,7 +17,7 @@
         <div class="row text-center text-lg-left">
         {% for picture in pictures %}
             <div class="col-lg-3 col-md-4 col-6">
-              <a href="{{ picture.image_file.path }}" class="d-block mb-4 h-100">
+              <a href="/gallery/{{ picture.id }}" class="d-block mb-4 h-100">
                 <img class="img-fluid img-thumbnail" src="{{ picture.thumbnail.path }}" alt="">
               </a>
             </div>
