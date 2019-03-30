@@ -11,7 +11,7 @@ from myapp.models import Picture
 class Upload(FormView):
     template_name = 'sicherheitsrisiko/upload.html'
     form_class = UploadForm
-    success_url = '#'
+    success_url = '/gallery'
 
     def form_invalid(self, form):
         print(form.errors)

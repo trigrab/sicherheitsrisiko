@@ -124,3 +124,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ASGI_APPLICATION = "sicherheitsrisiko.routing.application"
+
+try:
+        from .local_settings import *
+except ImportError:
+        print('local_settings.py is not be imported')
