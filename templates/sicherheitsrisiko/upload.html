@@ -91,6 +91,8 @@
             message.textContent = String(time) + ' ...';
             videoWidth = video.videoWidth;
             videoHeight = video.videoHeight;
+            htmlCanvas.width = videoWidth;
+            htmlCanvas.height = videoHeight;
             takeDelayedScreenshot(time);
 
         });
@@ -101,12 +103,6 @@
                 htmlCanvas.style.display = 'Block';
                 message.style.display = 'None';
                 var context = canvas.getContext('2d');
-                var innerWidth = window.innerWidth - 30;
-                context.canvas.width  = innerWidth;
-                context.canvas.height = window.innerHeight;
-                var scale = (videoWidth >= innerWidth) ? innerWidth/videoWidth : videoWidth/innerWidth;
-                context.scale(scale, scale);
-
                 context.drawImage(video, 0, 0, videoWidth, videoHeight);
                 context.globalAlpha=.50;
                 context.fillStyle="white";
@@ -116,8 +112,12 @@
                     context.save();
                     context.beginPath();
                     context.globalAlpha=1;
-                    context.drawImage(video, 0, 0,  videoWidth, videoHeight);
+                    context.drawImage(video, 0, 0, videoWidth, videoHeight);
                     context.restore();
+                    if (videoWidth > window.innerWidth - 30) {
+                        htmlCanvas.style.width = String(window.innerWidth - 30) + 'px';
+                        htmlCanvas.style.height = String(window.innerheight - 30) + 'px';
+                    }
                 }, 25);
                 isrunning = false;
                 document.getElementById('submit').removeAttribute('disabled');

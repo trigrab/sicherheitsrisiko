@@ -27,5 +27,5 @@ class Gallery(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['pictures'] = Picture.objects.filter(deleted=False)
+        context['pictures'] = Picture.objects.filter(deleted=False).order_by('-id')[:50]
         return context
