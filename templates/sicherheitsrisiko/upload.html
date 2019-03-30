@@ -8,13 +8,13 @@
     <div class="container-fluid">
 
 
-<h3>Take a Selfie for Johannes</h3>
+<h3>Take a Selfie for Johannes to remember</h3>
         <div class="d-flex flex-row-reverse mr-5">
 
     {% buttons %}
-        <a href="/gallery" id="snap" class="btn btn-raised btn-info">Gallery</a>
-        <button id="snap" class="btn btn-raised btn-info">Take selfie</button>
-        <button id="submit" type="submit" class="btn btn-raised btn-info" form="form" disabled>Upload</button>
+        <button id="gallery" class="btn btn-raised btn-info">Go to Gallery</button>
+        <button id="snap" class="btn btn-raised btn-info">Take Photo</button>
+        <button id="submit" type="submit" class="btn btn-raised btn-info" form="form" disabled>Upload Photo</button>
     {% endbuttons %}
 </div>
         {% if form.non_field_errors %}
@@ -142,4 +142,5 @@
 
       });
 </script>
+
 {% endblock %}

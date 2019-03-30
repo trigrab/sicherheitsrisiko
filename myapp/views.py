@@ -29,3 +29,25 @@ class Gallery(TemplateView):
         context = super().get_context_data()
         context['pictures'] = Picture.objects.filter(deleted=False).order_by('-id')[:50]
         return context
+
+
+class SinglePhoto(TemplateView):
+    template_name = 'sicherheitsrisiko/single_photo.html'
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        if not Picture.objects.filter(pk=kwargs['picture_id']).exists():
+            return {}
+        picture = Picture.objects.get(pk=kwargs['picture_id'])
+        next_pic = picture.id + 1 if Picture.objects.filter(pk=picture.id+1).exists() else picture.id
+        previous = picture.id - 1 if Picture.objects.filter(pk=picture.id-1).exists() else picture.id
+        context = {
+            'id': picture.id,
+            'comment': picture.comment,
+            'url': picture.image_file.path,
+            'next': next_pic,
+            'previous': previous,
+        }
+        return context

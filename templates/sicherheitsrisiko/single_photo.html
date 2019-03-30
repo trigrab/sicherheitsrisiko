@@ -1,0 +1,19 @@
+{# Load the tag library #}
+{% extends 'sicherheitsrisiko/base.html' %}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+
+{% block content %}
+    <div class="container-fluid">
+        <img src="{{ url }}">
+        <p>{{ comment }}</p>
+        <a href="/gallery/{{ previous }}" class="btn btn-raised btn-info">previous</a>
+        <a href="/gallery/{{ next }}" class="btn btn-raised btn-info">next</a>
+
+
+
+  </div>
+
+
+{% endblock content %}
