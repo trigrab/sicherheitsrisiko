@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
+    'channels',
     'myapp.apps.MyappConfig',
 ]
 
@@ -122,3 +123,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+ASGI_APPLICATION = "sicherheitsrisiko.routing.application"
