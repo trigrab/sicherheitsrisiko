@@ -15,8 +15,8 @@
 
 
             <div class="col-lg-3 col-md-4 col-6">
-              <a href="{{ picture.image_file.url }}" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="/media/{{ picture.thumbnail.url }}" alt="">
+              <a href="{{ picture.image_file.path }}" class="d-block mb-4 h-100">
+            <img class="img-fluid img-thumbnail" src="{{ picture.thumbnail.path }}" alt="">
               </a>
             </div>
     {% endfor %}
