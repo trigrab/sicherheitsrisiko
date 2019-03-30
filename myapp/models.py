@@ -8,6 +8,8 @@ from django.db import models
 from PIL import Image
 
 # Create your models here.
+from sicherheitsrisiko import settings
+
 THUMB_SIZE = (400, 400)
 
 
@@ -33,7 +35,7 @@ class Picture(models.Model):
         if self.thumbnail.name:
             print(self.thumbnail)
             return
-        with open(self.image_file.name, 'r') as f:
+        with open(settings.MEDIA_ROOT + 'pictures/' + self.image_file.name, 'r') as f:
             image = Image.open(self.image_file.name)
             image.thumbnail(THUMB_SIZE, Image.ANTIALIAS)
 
