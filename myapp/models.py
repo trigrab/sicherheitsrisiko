@@ -7,9 +7,6 @@ from django.core.files.base import ContentFile
 from django.db import models
 from PIL import Image
 
-# Create your models here.
-from sicherheitsrisiko import settings
-
 THUMB_SIZE = (400, 400)
 
 
@@ -25,15 +22,14 @@ class Picture(models.Model):
         """
         Make and save the thumbnail for the photo here.
         """
-        self.make_thumbnail()
         super().save(*args, **kwargs)
+        self.make_thumbnail()
 
     def make_thumbnail(self):
         """
         Create and save the thumbnail for the photo (simple resize with PIL).
         """
         if self.thumbnail.name:
-            print(self.thumbnail)
             return
         with open(self.image_file.path, 'r') as f:
             image = Image.open(self.image_file.path)
