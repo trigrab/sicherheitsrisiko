@@ -1,0 +1,137 @@
+{# Load the tag library #}
+{% extends 'sicherheitsrisiko/base.html' %}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+
+{% block content %}
+    <div class="container-fluid">
+
+
+<h3>Take a Selfie for Johannes to remember</h3>
+        <div class="d-flex flex-row-reverse mr-5">
+
+    {% buttons %}
+        <button id="snap" class="btn btn-raised btn-info">Take Photo</button>
+        <button id="submit" type="submit" class="btn btn-raised btn-info" form="form" disabled>Upload Photo</button>
+    {% endbuttons %}
+</div>
+        {% if form.non_field_errors %}
+            <div class="non-field-errors">
+                {% for err in form.non_field_errors %}
+                    <p class="form-error">{{ err }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    <form method="post" class="form align-items-start row form-signin justify-content-center" id="form"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-6">
+            <p style="display: None;" id="message"></p>
+            <video id="video" autoplay></video>
+            <canvas id="canvas" height="0"></canvas>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">
+            {% for field in form %}
+                    {% bootstrap_field field %}
+            {% endfor %}
+        </div>
+
+
+    </form>
+
+
+
+  </div>
+
+
+{% endblock content %}
+
+{% block js%}
+    <script type="application/javascript">
+    'use strict';
+        // Grab elements, create settings, etc.
+    	var htmlCanvas = document.getElementById('canvas');
+        var video = document.getElementById('video');
+
+        // Elements for taking the snapshot
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        var message = document.getElementById('message');
+
+        var isrunning = false;
+
+        // Get access to the camera!
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Not adding `{ audio: true }` since we only want video now
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                //video.src = window.URL.createObjectURL(stream);
+                video.srcObject = stream;
+                video.play();
+            });
+        }
+
+
+
+
+        // event listener for taking the snapshot
+        document.getElementById("snap").addEventListener("click", function() {
+            if (!isrunning) {
+                isrunning = true;
+                document.getElementById('submit').setAttribute('disabled', '');
+            }
+            else {
+                return;
+            }
+            var time = 3;
+            message.style.display = 'Block';
+            message.textContent = String(time) + ' ...';
+            takeDelayedScreenshot(time);
+
+        });
+
+        function takeDelayedScreenshot(time) {
+            if (time <= 0) {
+                video.style.display = 'None';
+                htmlCanvas.style.display = 'Block';
+                message.style.display = 'None';
+
+                htmlCanvas.width = 640;
+                htmlCanvas.height = 480;
+                context.drawImage(video, 0, 0, 640, 480);
+                context.globalAlpha=.50;
+                context.fillStyle="white";
+                context.fillRect(0,0,640,480);
+                context.restore();
+                setTimeout(function () {
+                    context.save();
+                    context.beginPath();
+                    context.globalAlpha=1;
+                    context.drawImage(video, 0, 0, 640, 480);
+                    context.restore();
+                }, 25);
+                isrunning = false;
+                document.getElementById('submit').removeAttribute('disabled');
+                return
+            }
+            message.style.display = 'Block';
+            message.textContent = String(time) + ' ...';
+            video.style.display = 'Block';
+            htmlCanvas.style.display = 'None';
+            window.setTimeout(function () {
+                takeDelayedScreenshot(time-1);
+            }, 1000);
+        }
+    </script>
+
+<script type="text/javascript">
+    $('#submit').click(function(){
+        canvas = document.getElementById('canvas');
+
+        document.getElementById('id_image_data').value = canvas.toDataURL('image/jpeg');
+
+      });
+</script>
+{% endblock %}
