@@ -35,8 +35,8 @@ class Picture(models.Model):
         if self.thumbnail.name:
             print(self.thumbnail)
             return
-        with open(settings.MEDIA_ROOT + 'pictures/' + self.image_file.name, 'r') as f:
-            image = Image.open(settings.MEDIA_ROOT + 'pictures/' + self.image_file.name)
+        with open(self.image_file.path, 'r') as f:
+            image = Image.open(self.image_file.path)
             image.thumbnail(THUMB_SIZE, Image.ANTIALIAS)
 
         # Path to save to, name, and extension
