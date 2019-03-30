@@ -40,7 +40,7 @@ class Picture(models.Model):
             image.thumbnail(THUMB_SIZE, Image.ANTIALIAS)
 
         # Path to save to, name, and extension
-        thumb_name, thumb_extension = os.path.splitext(self.image_file.name)
+        thumb_name, thumb_extension = os.path.splitext(self.image_file.path)
         thumb_extension = thumb_extension.lower()
 
         thumb_filename = thumb_name + '_thumb' + thumb_extension
