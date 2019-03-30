@@ -28,9 +28,9 @@
       enctype="multipart/form-data">
     {% csrf_token %}
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-6">
-            <p style="display: None;" id="message"></p>
-            <video id="video" autoplay></video>
-            <canvas id="canvas" height="0"></canvas>
+            <p style="display: None; font-weight: bold" id="message"></p>
+            <video id="video" style="transform: rotateY(180deg);" width="100%" autoplay></video>
+            <canvas id="canvas"></canvas>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">
             {% for field in form %}
@@ -57,11 +57,12 @@
 
         // Elements for taking the snapshot
         var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
 
         var message = document.getElementById('message');
 
         var isrunning = false;
+        var videoWidth = 0;
+        var videoHeight = 0;
 
         // Get access to the camera!
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -88,6 +89,8 @@
             var time = 3;
             message.style.display = 'Block';
             message.textContent = String(time) + ' ...';
+            videoWidth = video.videoWidth;
+            videoHeight = video.videoHeight;
             takeDelayedScreenshot(time);
 
         });
@@ -97,19 +100,23 @@
                 video.style.display = 'None';
                 htmlCanvas.style.display = 'Block';
                 message.style.display = 'None';
+                var context = canvas.getContext('2d');
+                var innerWidth = window.innerWidth - 30;
+                context.canvas.width  = innerWidth;
+                context.canvas.height = window.innerHeight;
+                var scale = (videoWidth >= innerWidth) ? innerWidth/videoWidth : videoWidth/innerWidth;
+                context.scale(scale, scale);
 
-                htmlCanvas.width = 640;
-                htmlCanvas.height = 480;
-                context.drawImage(video, 0, 0, 640, 480);
+                context.drawImage(video, 0, 0, videoWidth, videoHeight);
                 context.globalAlpha=.50;
                 context.fillStyle="white";
-                context.fillRect(0,0,640,480);
+                context.fillRect(0,0, videoWidth, videoHeight);
                 context.restore();
                 setTimeout(function () {
                     context.save();
                     context.beginPath();
                     context.globalAlpha=1;
-                    context.drawImage(video, 0, 0, 640, 480);
+                    context.drawImage(video, 0, 0,  videoWidth, videoHeight);
                     context.restore();
                 }, 25);
                 isrunning = false;
